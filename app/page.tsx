@@ -51,12 +51,17 @@ export default function Portfolio() {
       </nav>
 
       {/* Hero with 3D scene */}
-      <section className="relative min-h-screen flex items-center px-6 pt-20">
+      <section className="relative min-h-[100svh] flex items-end md:items-center px-6 pt-20 pb-16 md:pb-0 overflow-hidden">
         {/* background glow */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_70%_40%,rgba(37,99,235,0.18),transparent_60%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_25%,rgba(37,99,235,0.18),transparent_60%)] md:bg-[radial-gradient(ellipse_at_72%_50%,rgba(37,99,235,0.18),transparent_60%)]" />
 
-        <div className="relative max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 items-center gap-8">
-          <div className="order-2 md:order-1 min-w-0">
+        {/* 3D scene fills the whole hero, behind the text */}
+        <div className="absolute inset-0">
+          <Hero3DLazy />
+        </div>
+
+        <div className="relative max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 items-center gap-8 pointer-events-none">
+          <div className="min-w-0 pointer-events-auto">
             <p className="text-blue-500 font-mono mb-4">👋 Hi, I&apos;m</p>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-blue-100 to-violet-300 bg-clip-text text-transparent">
               {PROFILE.name}
@@ -82,10 +87,6 @@ export default function Portfolio() {
                 </a>
               )}
             </div>
-          </div>
-
-          <div className="order-1 md:order-2 min-w-0 h-[320px] md:h-[520px]">
-            <Hero3DLazy />
           </div>
         </div>
       </section>

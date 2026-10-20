@@ -1,13 +1,20 @@
 'use client';
 
 import { useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float, MeshDistortMaterial, Sparkles } from '@react-three/drei';
 import type { Group } from 'three';
 
 // The glowing blob + orbiting rings. Tilts gently toward the mouse.
 function Scene({ animate }: { animate: boolean }) {
   const group = useRef<Group>(null);
+  const { width, height } = useThree((s) => s.viewport);
+
+  // Wide screens: blob on the right, next to the text.
+  // Phones: blob centred near the top, above the text.
+  const wide = width > height;
+  const position: [number, number, number] = wide ? [width * 0.22, 0, 0] : [0, height * 0.27, 0];
+  const scale = wide ? Math.min(1, height / 5.2) : Math.min(1, width / 7.5);
 
   useFrame((state, delta) => {
     if (!group.current || !animate) return;
@@ -17,33 +24,41 @@ function Scene({ animate }: { animate: boolean }) {
   });
 
   return (
-    <group ref={group}>
-      <Float speed={animate ? 1.5 : 0} rotationIntensity={0.6} floatIntensity={1.2}>
-        <mesh scale={1.6}>
-          <icosahedronGeometry args={[1, 32]} />
-          <MeshDistortMaterial
-            color="#3b82f6"
-            emissive="#4c1d95"
-            emissiveIntensity={0.5}
-            roughness={0.2}
-            metalness={0.35}
-            distort={0.4}
-            speed={animate ? 2 : 0}
-          />
-        </mesh>
-      </Float>
+    <>
+      <group position={position} scale={scale}>
+        {/* coloured lights travel with the blob */}
+        <pointLight position={[-4, -2, 2]} intensity={30} color="#8b5cf6" />
+        <pointLight position={[4, 2, -2]} intensity={20} color="#22d3ee" />
+        <group ref={group}>
+          <Float speed={animate ? 1.5 : 0} rotationIntensity={0.6} floatIntensity={1.2}>
+            <mesh scale={1.6}>
+              <icosahedronGeometry args={[1, 32]} />
+              <MeshDistortMaterial
+                color="#3b82f6"
+                emissive="#4c1d95"
+                emissiveIntensity={0.5}
+                roughness={0.2}
+                metalness={0.35}
+                distort={0.4}
+                speed={animate ? 2 : 0}
+              />
+            </mesh>
+          </Float>
 
-      <mesh rotation={[Math.PI / 2.4, 0, 0]}>
-        <torusGeometry args={[2.6, 0.015, 16, 120]} />
-        <meshBasicMaterial color="#60a5fa" transparent opacity={0.5} />
-      </mesh>
-      <mesh rotation={[Math.PI / 1.8, 0.6, 0]}>
-        <torusGeometry args={[3.1, 0.01, 16, 120]} />
-        <meshBasicMaterial color="#a78bfa" transparent opacity={0.35} />
-      </mesh>
+          <mesh rotation={[Math.PI / 2.4, 0, 0]}>
+            <torusGeometry args={[2.6, 0.015, 16, 120]} />
+            <meshBasicMaterial color="#60a5fa" transparent opacity={0.5} />
+          </mesh>
+          <mesh rotation={[Math.PI / 1.8, 0.6, 0]}>
+            <torusGeometry args={[3.1, 0.01, 16, 120]} />
+            <meshBasicMaterial color="#a78bfa" transparent opacity={0.35} />
+          </mesh>
+        </group>
+      </group>
 
-      <Sparkles count={60} scale={7} size={2} speed={animate ? 0.4 : 0} color="#93c5fd" />
-    </group>
+      {/* Stars spread across the whole hero */}
+      <Sparkles count={120} scale={[width, height, 4]} size={2} speed={animate ? 0.4 : 0} color="#93c5fd" />
+    </>
   );
 }
 
@@ -58,11 +73,12 @@ export default function Hero3D() {
       dpr={[1, 1.5]} // cap resolution so cheap phones stay smooth
       frameloop={animate ? 'always' : 'demand'}
       gl={{ antialias: true, alpha: true }}
+      // The canvas sits behind the text, so track the mouse on the whole page
+      eventSource={document.body}
+      eventPrefix="client"
     >
       <ambientLight intensity={0.4} />
       <directionalLight position={[3, 4, 5]} intensity={2} color="#ffffff" />
-      <pointLight position={[-4, -2, 2]} intensity={30} color="#8b5cf6" />
-      <pointLight position={[4, 2, -2]} intensity={20} color="#22d3ee" />
       <Scene animate={animate} />
     </Canvas>
   );
