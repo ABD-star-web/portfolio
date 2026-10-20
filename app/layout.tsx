@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { PROFILE } from "@/lib/profile";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,16 +13,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Keep in sync with PROFILE in app/page.tsx
-const NAME = "Your Name";
-const TITLE = `${NAME} — AI Builder & Full-Stack Developer`;
-const DESCRIPTION =
-  "AI builder and full-stack developer from Faisalabad, Pakistan. I build AI-powered web apps with Next.js, DeepSeek and modern tools.";
+const NAME = PROFILE.name;
+const TITLE = `${NAME} | ${PROFILE.title}`;
+const DESCRIPTION = `${PROFILE.title} from ${PROFILE.location}. I build AI-powered web apps through vibe coding with Next.js, DeepSeek and modern AI tools.`;
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  keywords: ["AI builder", "full-stack developer", "Next.js developer Pakistan", "vibe coding", "freelance developer Faisalabad"],
+  keywords: [NAME, "AI enthusiast", "vibe coding", "AI apps Pakistan", "college student Faisalabad"],
   authors: [{ name: NAME }],
   openGraph: { title: TITLE, description: DESCRIPTION, type: "website", locale: "en_US" },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },

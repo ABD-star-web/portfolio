@@ -1,104 +1,12 @@
-'use client';
+import ChatWidget from '@/components/ChatWidget';
+import CopyEmailButton from '@/components/CopyEmailButton';
+import Hero3DLazy from '@/components/Hero3DLazy';
+import { ABOUT, FACTS, PROFILE, PROJECTS, SERVICES, SKILLS, SOCIALS } from '@/lib/profile';
 
-import { useState } from 'react';
-
-/* ============================================================
-   EDIT YOUR DETAILS HERE — everything below reads from these.
-   ============================================================ */
-
-const PROFILE = {
-  name: 'Your Name',
-  title: 'AI Builder & Full-Stack Developer',
-  location: 'Faisalabad, Pakistan',
-  email: 'your-email@gmail.com',
-  whatsapp: '923001234567', // 92 + number without the leading 0
-  github: 'https://github.com/your-username',
-  linkedin: 'https://linkedin.com/in/your-handle',
-  twitter: 'https://twitter.com/your-handle',
-  instagram: 'https://instagram.com/your-handle',
-  intro:
-    'I build AI-powered web applications with Next.js, TypeScript and modern AI APIs — and teach others to do the same at Dollar Tech.',
-};
-
-const ABOUT = [
-  'I run Dollar Tech, where I teach freelancing, AI-assisted "vibe coding", and digital marketing to Pakistani students. I direct AI tools like Claude and Cline to ship real production apps.',
-  'Beyond code, I run Meta ad campaigns, manage Shopify stores, and build content websites. The future belongs to builders who combine business thinking with modern AI tools.',
-];
-
-const FACTS: [string, string][] = [
-  ['📍 Location', PROFILE.location],
-  ['💼 Open to', 'Freelance & Full-time'],
-  ['🗣️ Languages', 'English, Urdu'],
-  ['⚡ Interests', 'AI, SaaS, Teaching'],
-];
-
-type Project = {
-  title: string;
-  summary: string;
-  description: string;
-  tags: string[];
-  links: { label: string; href: string; primary?: boolean }[];
-  featured?: boolean;
-};
-
-const PROJECTS: Project[] = [
-  {
-    title: '🤖 myai — My Own ChatGPT',
-    summary: 'Self-hosted AI chat app with a 4-route smart classifier',
-    description:
-      'Routes each question to the best pipeline: direct DeepSeek V3 answers, live web search via Tavily, deep research with page scraping, or step-by-step reasoning with DeepSeek R1. Streaming responses, Supabase caching, auto-deployed on Vercel.',
-    tags: ['Next.js', 'TypeScript', 'Tailwind', 'DeepSeek', 'Tavily', 'Vercel AI SDK', 'Supabase'],
-    links: [
-      { label: 'Live Demo', href: 'https://your-live-url.vercel.app', primary: true },
-      { label: 'GitHub', href: 'https://github.com/your-username/myai' },
-    ],
-    featured: true,
-  },
-  {
-    title: '🛍️ Shopify Store Management',
-    summary: 'E-commerce for the Pakistani COD market',
-    description:
-      'Set up and ran Shopify stores end to end: product listings, Meta ad campaigns, and conversion optimisation for cash-on-delivery customers.',
-    tags: ['Shopify', 'Meta Ads', 'Google Analytics', 'COD'],
-    links: [{ label: 'Case Study', href: '#' }],
-  },
-  {
-    title: '📝 Content Websites',
-    summary: 'SEO-driven niche sites',
-    description:
-      'Built and grew content websites in travel, lifestyle and tech niches with an SEO-first content strategy and ad monetisation.',
-    tags: ['WordPress', 'SEO', 'Content Strategy'],
-    links: [{ label: 'View Sites', href: '#' }],
-  },
-];
-
-const SKILLS = [
-  {
-    title: '💻 Development',
-    items: ['TypeScript / JavaScript', 'Next.js / React', 'Tailwind CSS', 'Node.js', 'Git / GitHub', 'Vercel'],
-  },
-  {
-    title: '🤖 AI & Vibe Coding',
-    items: ['Claude / DeepSeek / Gemini', 'Claude Code & Cline', 'Vercel AI SDK', 'Tavily search', 'Supabase', 'Prompt engineering'],
-  },
-  {
-    title: '📈 Marketing & Business',
-    items: ['Meta Ads', 'Shopify', 'WordPress & SEO', 'Content monetisation', 'Google Analytics', 'Teaching & mentoring'],
-  },
-];
-
-const SERVICES = [
-  { icon: '🤖', title: 'Custom AI Chat Apps', text: 'Branded AI chat apps for your business with your own domain and knowledge base. From $200.' },
-  { icon: '🌐', title: 'Website Development', text: 'Fast, responsive, SEO-ready websites on Next.js + Tailwind, deployed to Vercel. From $150.' },
-  { icon: '📣', title: 'Meta Ads Management', text: 'Facebook & Instagram campaigns for e-commerce and lead generation. Retainers from $300/mo.' },
-  { icon: '🎓', title: 'AI Coding Mentorship', text: 'One-on-one lessons in vibe coding, AI integrations and shipping real products.' },
-];
+// To change any text on the page, edit lib/profile.ts
 
 const SECTIONS = ['About', 'Projects', 'Skills', 'Services', 'Contact'];
-
-/* ============================================================ */
-
-const card = 'bg-neutral-900 border border-neutral-800 rounded-xl p-6';
+const card = 'bg-neutral-900/60 backdrop-blur border border-neutral-800 rounded-xl p-6';
 
 function SectionHeading({ n, children }: { n: number; children: React.ReactNode }) {
   return (
@@ -118,29 +26,16 @@ function ExternalLink({ href, className, children }: { href: string; className?:
 }
 
 export default function Portfolio() {
-  const [copied, setCopied] = useState(false);
-
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(PROFILE.email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      window.location.href = `mailto:${PROFILE.email}`;
-    }
-  };
-
   const firstName = PROFILE.name.split(' ')[0];
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-neutral-100">
+    <main className="min-h-screen bg-neutral-950 text-neutral-100 overflow-x-hidden">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-neutral-950/80 backdrop-blur-lg z-50 border-b border-neutral-800">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+      <nav className="fixed top-0 w-full bg-neutral-950/70 backdrop-blur-lg z-40 border-b border-neutral-800/60">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <a href="#" className="text-xl font-bold">
-            <span className="text-blue-500">&lt;</span>
             {firstName}
-            <span className="text-blue-500">/&gt;</span>
+            <span className="text-blue-500">.</span>
           </a>
           <div className="hidden md:flex gap-8 text-sm text-neutral-400">
             {SECTIONS.map((s) => (
@@ -155,31 +50,49 @@ export default function Portfolio() {
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="min-h-screen flex items-center px-6 pt-20">
-        <div className="max-w-5xl mx-auto w-full">
-          <p className="text-blue-500 font-mono mb-4">👋 Hi, I&apos;m</p>
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-neutral-400 bg-clip-text text-transparent">
-            {PROFILE.name}
-          </h1>
-          <p className="text-2xl md:text-4xl font-semibold text-neutral-400 mb-8">{PROFILE.title}</p>
-          <p className="text-lg text-neutral-500 max-w-2xl mb-10 leading-relaxed">
-            {PROFILE.intro} Based in {PROFILE.location}.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <a href="#projects" className="px-6 py-3 bg-blue-600 rounded-lg hover:bg-blue-700 transition font-medium">
-              View My Work
-            </a>
-            <a href="#contact" className="px-6 py-3 border border-neutral-700 rounded-lg hover:bg-neutral-900 transition font-medium">
-              Get In Touch
-            </a>
+      {/* Hero with 3D scene */}
+      <section className="relative min-h-screen flex items-center px-6 pt-20">
+        {/* background glow */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_70%_40%,rgba(37,99,235,0.18),transparent_60%)]" />
+
+        <div className="relative max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 items-center gap-8">
+          <div className="order-2 md:order-1 min-w-0">
+            <p className="text-blue-500 font-mono mb-4">👋 Hi, I&apos;m</p>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-blue-100 to-violet-300 bg-clip-text text-transparent">
+              {PROFILE.name}
+            </h1>
+            <p className="text-2xl md:text-3xl font-semibold text-neutral-400 mb-6">{PROFILE.title}</p>
+            <p className="text-lg text-neutral-500 max-w-xl mb-10 leading-relaxed">
+              {PROFILE.intro} Based in {PROFILE.location}.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a href="#projects" className="px-6 py-3 bg-blue-600 rounded-lg hover:bg-blue-700 transition font-medium">
+                View My Work
+              </a>
+              {PROFILE.chatUrl ? (
+                <ExternalLink
+                  href={PROFILE.chatUrl}
+                  className="px-6 py-3 border border-neutral-700 rounded-lg hover:bg-neutral-900 transition font-medium"
+                >
+                  🤖 Try my AI
+                </ExternalLink>
+              ) : (
+                <a href="#contact" className="px-6 py-3 border border-neutral-700 rounded-lg hover:bg-neutral-900 transition font-medium">
+                  Get In Touch
+                </a>
+              )}
+            </div>
+          </div>
+
+          <div className="order-1 md:order-2 min-w-0 h-[320px] md:h-[520px]">
+            <Hero3DLazy />
           </div>
         </div>
       </section>
 
       {/* About */}
       <section id="about" className="py-24 px-6 border-t border-neutral-800">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <SectionHeading n={1}>About Me</SectionHeading>
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-4 text-neutral-400 leading-relaxed">
@@ -204,11 +117,14 @@ export default function Portfolio() {
 
       {/* Projects */}
       <section id="projects" className="py-24 px-6 border-t border-neutral-800">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <SectionHeading n={2}>Featured Projects</SectionHeading>
           <div className="space-y-6">
-            {PROJECTS.map((p) => (
-              <article key={p.title} className={`${card} hover:border-blue-500 transition`}>
+            {PROJECTS.map((p) => ({ ...p, links: p.links.filter((l) => l.href) })).map((p) => (
+              <article
+                key={p.title}
+                className={`${card} transition duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-600/10`}
+              >
                 <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
                   <div>
                     <div className="flex flex-wrap items-center gap-3 mb-2">
@@ -219,21 +135,23 @@ export default function Portfolio() {
                     </div>
                     <p className="text-neutral-400 text-sm">{p.summary}</p>
                   </div>
-                  <div className="flex gap-2">
-                    {p.links.map((l) => (
-                      <ExternalLink
-                        key={l.label}
-                        href={l.href}
-                        className={
-                          l.primary
-                            ? 'text-xs px-3 py-1 bg-blue-600 rounded hover:bg-blue-700 transition'
-                            : 'text-xs px-3 py-1 border border-neutral-700 rounded hover:bg-neutral-800 transition'
-                        }
-                      >
-                        {l.label}
-                      </ExternalLink>
-                    ))}
-                  </div>
+                  {p.links.length > 0 && (
+                    <div className="flex gap-2">
+                      {p.links.map((l) => (
+                        <ExternalLink
+                          key={l.label}
+                          href={l.href}
+                          className={
+                            l.primary
+                              ? 'text-xs px-3 py-1 bg-blue-600 rounded hover:bg-blue-700 transition'
+                              : 'text-xs px-3 py-1 border border-neutral-700 rounded hover:bg-neutral-800 transition'
+                          }
+                        >
+                          {l.label}
+                        </ExternalLink>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <p className="text-neutral-400 text-sm mb-4 leading-relaxed">{p.description}</p>
                 <div className="flex flex-wrap gap-2">
@@ -251,7 +169,7 @@ export default function Portfolio() {
 
       {/* Skills */}
       <section id="skills" className="py-24 px-6 border-t border-neutral-800">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <SectionHeading n={3}>Skills &amp; Tools</SectionHeading>
           <div className="grid md:grid-cols-3 gap-6">
             {SKILLS.map((group) => (
@@ -270,11 +188,11 @@ export default function Portfolio() {
 
       {/* Services */}
       <section id="services" className="py-24 px-6 border-t border-neutral-800">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <SectionHeading n={4}>Services I Offer</SectionHeading>
           <div className="grid md:grid-cols-2 gap-6">
             {SERVICES.map((s) => (
-              <div key={s.title} className={card}>
+              <div key={s.title} className={`${card} transition duration-300 hover:-translate-y-1 hover:border-blue-500`}>
                 <div className="text-3xl mb-3">{s.icon}</div>
                 <h3 className="font-semibold mb-2">{s.title}</h3>
                 <p className="text-sm text-neutral-400 leading-relaxed">{s.text}</p>
@@ -287,16 +205,12 @@ export default function Portfolio() {
       {/* Contact */}
       <section id="contact" className="py-24 px-6 border-t border-neutral-800">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            <span className="text-blue-500 font-mono">05.</span> Let&apos;s Build Together
-          </h2>
-          <p className="text-neutral-400 mb-10 text-lg">
-            Need an AI app, a website, or marketing help? I reply within 24 hours.
+          <SectionHeading n={5}>Let&apos;s Work Together</SectionHeading>
+          <p className="text-neutral-400 -mt-6 mb-10 text-lg">
+            Need an AI app, a website, or marketing help? I reply within 24 hours, or you can ask my AI right now (bottom right).
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-10">
-            <button onClick={copyEmail} className="px-6 py-3 bg-blue-600 rounded-lg hover:bg-blue-700 transition font-medium">
-              {copied ? '✓ Email Copied!' : '📧 Copy Email'}
-            </button>
+            <CopyEmailButton email={PROFILE.email} />
             <ExternalLink
               href={`https://wa.me/${PROFILE.whatsapp}`}
               className="px-6 py-3 border border-neutral-700 rounded-lg hover:bg-neutral-900 transition font-medium"
@@ -305,12 +219,7 @@ export default function Portfolio() {
             </ExternalLink>
           </div>
           <div className="flex flex-wrap justify-center gap-6 text-neutral-400">
-            {[
-              ['LinkedIn', PROFILE.linkedin],
-              ['GitHub', PROFILE.github],
-              ['Twitter', PROFILE.twitter],
-              ['Instagram', PROFILE.instagram],
-            ].map(([label, href]) => (
+            {SOCIALS.map(([label, href]) => (
               <ExternalLink key={label} href={href} className="hover:text-white transition">
                 {label}
               </ExternalLink>
@@ -320,9 +229,11 @@ export default function Portfolio() {
       </section>
 
       <footer className="py-8 px-6 border-t border-neutral-800 text-center text-sm text-neutral-500">
-        <p>Built with Next.js + Tailwind by {PROFILE.name}</p>
+        <p>Built through vibe coding with Next.js, Three.js and Tailwind by {PROFILE.name}</p>
         <p className="mt-2">© 2026 All rights reserved.</p>
       </footer>
+
+      <ChatWidget />
     </main>
   );
 }
